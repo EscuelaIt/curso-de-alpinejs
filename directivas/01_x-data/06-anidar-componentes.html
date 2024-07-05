@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo anidar componentes</h1>
+  
+  <div x-data="{ciudad: 'Valencia', pais: 'España'}">
+    <p>En este ámbito puedo acceder al país <span x-text="pais"></span> y la ciudad <span x-text="ciudad"></span>.</p>
+
+    <div x-data="{comunidadAutonoma: 'Comunidad Valenciana', ciudad: 'Alicante'}">
+      <p>
+        En este ámbito puedo acceder al país 
+        <span x-text="pais"></span> 
+        y la comunidad autónoma
+        <span x-text="comunidadAutonoma"></span>
+        y la ciudad 
+        <span x-text="ciudad"></span>.
+      </p>
+    </div>
+
+    <div x-data="{ counter: 0 }">
+      <span x-text="counter"></span>
+      <button x-on:click="counter = counter + 1">Incrementar <span x-text=""></span></button>
+    </div>
+
+  </div>
+
+</body>
+</html>

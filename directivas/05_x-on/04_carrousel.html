@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horizontal Scroll Snap Example</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 1rem;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .carousel-container {
+      width: 100%;
+      /* Ancho completo del viewport */
+      height: 300px;
+      /* Altura fija del carrusel */
+      overflow-x: scroll;
+      /* Habilita el desplazamiento horizontal */
+      scroll-snap-type: x mandatory;
+      /* Configura el scroll snap en horizontal */
+      display: flex;
+      align-items: center;
+      scroll-behavior: smooth;
+    }
+
+    .carousel-item {
+      flex: 0 0 90%;
+      /* No crece, no se encoge, base de 90% del viewport */
+      height: 250px;
+      /* Altura de cada elemento del carrusel */
+      margin: 0 5%;
+      /* Margen horizontal para centrar los elementos */
+      background-color: #ccc;
+      /* Color de fondo por defecto */
+      scroll-snap-align: center;
+      /* Alinea los elementos al centro del contenedor al hacer scroll */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      color: white;
+      text-align: center;
+    }
+
+    .red {
+      background-color: #ff6347;
+    }
+
+    .blue {
+      background-color: #4682b4;
+    }
+
+    .green {
+      background-color: #3cb371;
+    }
+
+    .orange {
+      background-color: #e3ae11;
+    }
+
+    .purple {
+      background-color: #8f3cb3;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Carrusel</h1>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos ratione accusamus esse porro mollitia suscipit
+    accusantium similique officiis velit alias iure officia ipsa cumque temporibus magnam, animi quaerat ex assumenda.
+  </p>
+
+  <section x-data="carousel">
+    <button @click="move(-1)">Atrás</button>
+    <button @click="move(1)">Adelante</button>
+    <div 
+      class="carousel-container" 
+      @keydown.left.window="move(-1)" 
+      @keydown.right.window="move(1)" 
+      x-ref="carousel"
+    >
+      <div class="carousel-item red">Elemento 1</div>
+      <div class="carousel-item blue">Elemento 2</div>
+      <div class="carousel-item green">Elemento 3</div>
+      <div class="carousel-item orange">Elemento 4</div>
+      <div class="carousel-item purple">Elemento 5</div>
+    </div>
+  </section>
+
+
+
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa cupiditate quia id vitae omnis suscipit porro
+    nostrum, enim ad tempore alias at, totam corporis! Odit voluptatum hic voluptatibus eos dolorum?</p>
+  <p>Eaque distinctio asperiores similique facilis aliquam? Asperiores, molestiae! Laborum officiis quaerat itaque?
+    Excepturi odit animi velit veniam inventore, illum, obcaecati expedita itaque ad quasi aliquam vitae. Dolorum
+    eligendi corrupti voluptatibus?</p>
+  <p>Nulla dignissimos libero in pariatur illo exercitationem fuga aliquam quaerat non dolorum officiis blanditiis
+    dolore quam deleniti laboriosam fugiat odio sequi, incidunt ducimus velit, provident repellat officia fugit ipsa!
+    Doloremque.</p>
+  <p>Blanditiis, excepturi. Recusandae quis officia reprehenderit repudiandae labore quisquam natus modi, itaque soluta
+    consequuntur iste tempore, vitae, cum blanditiis autem sit expedita magnam unde minima quos ipsam vel nobis. Rem!
+  </p>
+  <p>Sint voluptate, quidem in tenetur hic temporibus quaerat sapiente ipsa maiores labore? Earum amet velit omnis ipsam
+    dicta aspernatur nostrum nobis dolores, qui cumque voluptate magnam, aliquam quod, fugit pariatur?</p>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('carousel', () => ({
+        active: 0,
+        move(direction) {
+          const maxIndex = this.$refs.carousel.children.length - 1;
+          this.active = Math.max(0, Math.min(maxIndex, this.active + direction));
+          this.$refs.carousel.scrollLeft = this.active * this.$refs.carousel.offsetWidth;
+        }
+      }))
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .List {
+      padding: 0 0.6rem;
+    }
+    .List li {
+      list-style: none;
+      padding-left: 25px;
+      background-repeat: no-repeat;
+      background-position: 0 50%;
+      line-height: 25px;
+    }
+    .RegularList li {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="blue"/></svg>');
+    }
+
+    .AlternativeList li {
+      background-position: 0 80%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><rect width="20" height="20" fill="red"/></svg>');
+      font-weight: bold;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo x-bind class</h1>
+  
+  <div x-data="{ listClass: 'RegularList' }">
+    <ul class="List" :class="listClass">
+      <li>Elemento 1</li>
+      <li>Elemento 2</li>
+      <li>Elemento 3</li>
+    </ul>
+    <button x-on:click="listClass = 'AlternativeList'">Cambiar class</button>
+  </div>
+  
+</body>
+</html>

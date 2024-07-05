@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drop down</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .container {
+      margin: 0 auto;
+      max-width: 500px;
+    }
+    .drop {
+      width: 280px;
+      border: 1px solid #ddd;
+      background-color: #f5f5f5;
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" x-data="{ opened: false }">
+    <h1>Drop down Apline.js</h1>
+    <p>
+      <button x-bind="openButton">Abrir</button>
+    </p>
+    <div x-bind="dropContent">
+      Soy el drop down
+    </div>
+  </div>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.bind('openButton', () => ({
+            '@click'() {
+                this.opened = true;
+                console.log(this.opened);
+            },
+        }))
+
+        Alpine.bind('dropContent', () => ({
+            'class': 'drop',
+            'x-show'() {
+              return this.opened;
+            },
+            '@click.outside'() {
+              this.opened = false;
+              console.log('click outside');
+            }
+        }))
+    })
+  </script>
+</body>
+</html>

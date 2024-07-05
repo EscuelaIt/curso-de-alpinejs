@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drop down</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .container {
+      margin: 0 auto;
+      max-width: 500px;
+    }
+    .drop {
+      width: 280px;
+      border: 1px solid #ddd;
+      background-color: #f5f5f5;
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" x-data="{ 
+    opened: false,
+    foo: 'ggg',
+    causeEffect() {
+      console.log('opened', this.opened, this.foo);
+      if(this.opened) {
+        document.body.style.backgroundColor = 'red'
+      } else {
+        document.body.style.backgroundColor = 'blue'
+      }
+    }
+  }" x-effect="causeEffect">
+    <h1>Drop down Apline.js</h1>
+    <p>
+      <button @click="opened = true">Abrir</button>
+    </p>
+    <div class="drop" x-transition x-show="opened" @click.outside="opened = false">
+      Soy el drop down
+    </div>
+
+    <button @click="foo = 'hhh'">click!!!</button>
+  </div>
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</body>
+</html>

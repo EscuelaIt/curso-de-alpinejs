@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .color-box {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo x-for</h1>
+  
+  <div x-data="{
+    colors: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'],
+  }">
+    <template x-for="color in colors">
+      <span class="color-box" :style="{ backgroundColor: color}"></span>
+    </template>
+  </div>
+  
+</body>
+</html>

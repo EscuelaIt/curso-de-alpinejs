@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    [x-cloak] { display: none !important; }
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .close {
+      float: right;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+  <h1>Ejemplo</h1>
+  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut distinctio iste nemo repudiandae id vel, ipsa velit possimus quo quasi esse explicabo dicta et facere pariatur molestias porro dolore molestiae!</p>
+  <p>Fugiat voluptatem quo molestias voluptate laudantium quos illo dolor, id ullam eaque quis tenetur quidem inventore autem ea ab aspernatur, unde rerum. Nostrum, delectus aperiam esse maiores doloremque sint. Hic?</p>
+  <p>Hic sapiente quidem consequuntur laborum reiciendis autem vitae voluptas at minus mollitia non dolores sit aliquam dolore blanditiis voluptatem odio a, soluta suscipit quas eos voluptates. Omnis sit magni harum!</p>
+  <p>Atque iure tenetur facilis a nisi voluptas optio! Iusto vero, fuga aspernatur, voluptas nemo quidem dignissimos repellat veniam beatae sed natus repudiandae aliquam, blanditiis deserunt velit esse ea officia veritatis?</p>
+  
+  <div x-data="{showModal: false}">
+    <button @click="showModal = true">Abrir</button>
+    <template x-teleport="body">
+      <div x-cloak x-show="showModal" class="modal" @click.self="showModal = false"  @click="console.log('click!!!');">
+        <div class="modal-content">
+            <span class="close" @click="showModal = false">&times;</span>
+            <h2>Contenido del Modal</h2>
+            <p>Este es un ejemplo de una caja modal creada con Alpine.js.</p>
+        </div>
+      </div>
+    </template>
+  </div>
+
+</body>
+
+</html>

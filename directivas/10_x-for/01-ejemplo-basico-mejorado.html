@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .color-box {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+    .colorpicker {
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background-color: #f4f4f4;
+      padding: 0.25rem 0.5rem;
+      display: inline-block;
+    }
+    .colorpickercontent {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .drop {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      width: 300px;
+      position: relative;
+      top: 10px;
+      border-radius: 8px;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo color picker</h1>
+  
+  <div x-data="{miColor: '#AAAAAA'}">
+    <p x-text="miColor"></p>
+    <div x-data="colorPicker" x-modelable="colorSelected" x-model="miColor">
+      <div class="colorpicker" @click="opened=true">
+        <div class="colorpickercontent">
+          <span class="color-box" :style="{ backgroundColor: colorSelected}"></span>
+          <span>Selecciona color</span>
+        </div>
+      </div>
+      <div class="drop" x-show="opened" @click.outside="opened = false">
+        <template x-for="color in colors">
+          <span class="color-box" :style="{ backgroundColor: color}" @click="selectColor(color)"></span>
+        </template>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('colorPicker', () => ({
+          colors: ['#AAAAAA', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'],
+          colorSelected: '#AAAAAA',
+          opened: false,
+          selectColor(color) {
+            this.colorSelected = color;
+          }
+        }))
+    })
+  </script>
+</body>
+</html>

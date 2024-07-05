@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    ul {
+      margin: 1rem 0;
+      padding: 0;
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: auto auto 1fr;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 10px;
+    }
+
+    .message {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: #333;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+    }
+    .message p {
+      margin: 0;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      background-color: rgb(149, 154, 248);
+      padding: 0.75rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    header h1 {
+      flex-grow: 1;
+      margin: 0;
+    }
+
+    header span  {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 4rem;
+      background-color: aquamarine;
+    }
+
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+  <header x-data>
+    <h1>Ejemplo todo list</h1>
+    <span x-text="$store.todos.collection.length"></span>
+  </header>
+
+  <div x-id="['inputid']" x-data="todoApp">
+    <label :for="$id('inputid')">Tarea:</label>
+    <input :id="$id('inputid')" type="text" x-model="newTodo" @keyup.enter="addTodo"> <button @click="addTodo">Añadir</button>
+    <template x-if="$store.todos.collection.length == 0"><p>No hay tareas... escribe algo</p></template>
+    <template x-if="$store.todos.collection.length > 0">
+      <section>
+        <ul>
+          <template x-for="(todo, index) in $store.todos.collection" :key="index">
+            <li class="task"> 
+              <img src="delete.svg" @click="deleteTodo(index)">
+              <input x-bind="todocheck(index)">
+              <span x-text="todo"></span>
+            </li>
+          </template>
+        </ul>
+        <button @click="deleteChecked">Borrar elementos</button>
+      </section>
+    </template>
+  </div>
+
+  <div 
+    x-data="messageComponent" 
+    class="message" 
+    @eitmessage.window="showMessage"
+    x-show="visible"
+    x-transition
+    x-transition:leave.opacity.duration.200ms
+  >
+    <p x-text="message"></p>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+
+      Alpine.bind('todocheck', (index) => ({
+          type: 'checkbox',
+          '@click'(e) {
+            this.addChecked(index);
+          },
+          ':checked'() {
+            return this.isChecked(index);
+          }
+      }))
+
+      Alpine.data('todoApp', () => ({
+        newTodo: '',
+        checkedElements: [],
+        addTodo() {
+          this.$store.todos.collection.push(this.newTodo);
+          console.log(this.$store.todos.collection);
+          this.newTodo = '';
+          this.$dispatch('eitmessage', 'Has creado una nueva tarea');
+        },
+        deleteTodo(index) {
+          this.$store.todos.collection.splice(index, 1);
+          this.$dispatch('eitmessage', 'Has eliminado una tarea');
+        },
+        addChecked(index) {
+          let checked = this.$el.checked;
+          console.log('checked', checked);
+          if(checked) {
+            if(!this.checkedElements.includes(index)) {
+              this.checkedElements.push(index);
+            }
+          } else {
+            let position = this.checkedElements.indexOf(index);
+            if(position != -1) {
+              this.checkedElements.splice(position, 1);
+            }
+          }
+          console.log(this.checkedElements);
+        },
+        deleteChecked() {
+          // this.checkedElements.forEach(item => this.deleteTodo(item)); 
+          this.$store.todos.collection = this.$store.todos.collection.filter((item, index) => !this.checkedElements.includes(index))
+          this.checkedElements = [];
+        },
+        isChecked(index) {
+          return this.checkedElements.includes(index);
+        }
+      }));
+
+      Alpine.data('messageComponent', () => ({
+        duration: 3000,
+        message: '',
+        visible: false,
+        timeout: null,
+        showMessage(e) {
+          if(this.visible) {
+            console.log('desactivar tarea');
+            this.visible = false;
+            setTimeout(() => this.showMessage(e), 200); 
+            return;
+          }
+          this.message = e.detail;
+          this.visible = true;
+          if(this.timeout) {
+            clearTimeout(this.timeout)
+          }
+          this.timeout = setTimeout(() => this.visible = false, this.duration);
+        }
+      }));
+    });
+  </script>
+  <script>
+    document.addEventListener('alpine:initializing', () => {
+      Alpine.store('todos', {
+          collection: Alpine.$persist([]),
+
+        });
+    });
+  </script>
+</body>
+
+</html>

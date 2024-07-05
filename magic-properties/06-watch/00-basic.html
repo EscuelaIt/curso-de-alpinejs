@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo</h1>
+  
+  <div x-data="{ 
+    message: 'Haz clic',
+    updateButton() {
+      this.message='Hola EscuelaIT';
+    },
+    init() {
+      this.$watch('message', (value, oldValue) => {
+        console.log('nuevo value', value, 'viejo value', oldValue)
+        // this.message = 'lalala' + this.$el.innerText;
+      })
+    }
+  }">
+    <button x-text="message" @click="updateButton"></button>
+    <button x-text="message" @click="message='hohoho'"></button>
+  </div>
+</body>
+</html>

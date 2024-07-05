@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo</h1>
+  
+  <div x-data>
+    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi, eum et dicta, repudiandae alias nostrum sint amet saepe quas nulla nobis modi quos maiores cumque distinctio nihil facere? Fuga, doloremque.</p>
+    <button @click="$root.style.backgroundColor='orange'">Cambiar color</button>
+    <button @click="$root.remove()">Quitar</button>
+  </div>
+  
+</body>
+</html>

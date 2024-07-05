@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .message {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: #333;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+    }
+    .message p {
+      margin: 0;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo</h1>
+  
+  <div x-data>
+    <button @click="$dispatch('eitmessage', 'Hola EscuelaIT')">Decir "Hola"</button>
+    <button @click="$dispatch('eitmessage', 'Adiós ... volveremos pronto!!')">Decir "Adiós"</button>
+  </div>
+
+  <div 
+    x-data="messageComponent" 
+    class="message" 
+    @eitmessage.window="showMessage"
+    x-show="visible"
+    x-transition
+    x-transition:leave.opacity.duration.300ms
+  >
+    <p x-text="message"></p>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('messageComponent', () => ({
+        duration: 3000,
+        message: '',
+        visible: false,
+        timeout: null,
+        showMessage(e) {
+          this.message = e.detail;
+          this.visible = true;
+          if(this.timeout) {
+            clearTimeout(this.timeout)
+          }
+          this.timeout = setTimeout(() => this.visible = false, this.duration);
+        }
+      }));
+    });
+  </script>
+</body>
+</html>

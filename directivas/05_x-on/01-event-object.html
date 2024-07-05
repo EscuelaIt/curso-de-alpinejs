@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Objeto evento</h1>
+  
+  <div x-data @click="console.log('has hecho click en el componente');">
+    <input type="text" @click="console.log('Has hecho click en el input', $event.target.value='lalala');" value="Campo de texto">
+    <p>
+      <a href="https://escuela.it" @click="$event.preventDefault(); console.log('link');">Prevent Default</a>
+    </p>
+    <button @click="paraPropagacion">Parar propagación</button>
+  </div>
+
+  <script>
+    function paraPropagacion(e) {
+      e.stopPropagation();
+      console.log('has hecho clic en el botón');
+    }
+  </script>
+</body>
+</html>

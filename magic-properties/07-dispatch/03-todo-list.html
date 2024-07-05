@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    ul {
+      margin: 1rem 0;
+      padding: 0;
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 10px;
+    }
+
+    .message {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: #333;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+    }
+    .message p {
+      margin: 0;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+  <h1>Ejemplo todo list</h1>
+
+  <div x-id="['inputid']" x-data="todoApp">
+    <label :for="$id('inputid')">Tarea:</label>
+    <input :id="$id('inputid')" type="text" x-model="newTodo" @keyup.enter="addTodo"> <button @click="addTodo">Añadir</button>
+    <template x-if="todos.length == 0"><p>No hay tareas... escribe algo</p></template>
+    <template x-if="todos.length > 0">
+      <ul>
+        <template x-for="(todo, index) in todos" :key="index">
+          <li class="task"> 
+            <img src="delete.svg" @click="deleteTodo(index)">
+            <span x-text="todo"></span>
+          </li>
+        </template>
+      </ul>
+    </template>
+  </div>
+
+  <div 
+    x-data="messageComponent" 
+    class="message" 
+    @eitmessage.window="showMessage"
+    x-show="visible"
+    x-transition
+    x-transition:leave.opacity.duration.200ms
+  >
+    <p x-text="message"></p>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      
+      Alpine.data('todoApp', () => ({
+        newTodo: '',
+        todos: [],
+        addTodo() {
+          this.todos.push(this.newTodo);
+          console.log(this.todos);
+          this.newTodo = '';
+          this.$dispatch('eitmessage', 'Has creado una nueva tarea');
+        },
+        deleteTodo(index) {
+          this.todos.splice(index, 1);
+          this.$dispatch('eitmessage', 'Has eliminado una tarea');
+        }
+      }));
+
+      Alpine.data('messageComponent', () => ({
+        duration: 3000,
+        message: '',
+        visible: false,
+        timeout: null,
+        showMessage(e) {
+          if(this.visible) {
+            console.log('desactivar tarea');
+            this.visible = false;
+            setTimeout(() => this.showMessage(e), 200); 
+            return;
+          }
+          this.message = e.detail;
+          this.visible = true;
+          if(this.timeout) {
+            clearTimeout(this.timeout)
+          }
+          this.timeout = setTimeout(() => this.visible = false, this.duration);
+        }
+      }));
+    });
+  </script>
+</body>
+
+</html>

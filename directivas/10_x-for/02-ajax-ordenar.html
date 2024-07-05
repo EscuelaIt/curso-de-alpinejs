@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .country {
+      border: 1px solid orange;
+      margin: 1rem 0;
+      padding: 1rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo ajax y x-for</h1>
+  
+  <div x-data="countries" x-init="fetchCountries">
+    <div>
+      <button @click="sortCountries('asc')">Orden Ascendente</button>
+      <button @click="sortCountries('desc')">Orden Descendente</button>
+    </div>
+    <template x-for="country in countries" :key="country.id">
+      <div class="country">
+        <span x-text="country.name"></span>
+        -
+        <span x-text="country.continent"></span>
+      </div>
+    </template>
+  </div>
+  
+  <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('countries', () => ({
+          countries: [],
+          fetchCountries() {
+            fetch('https://timer.escuelait.com/api/countries')
+            .then(response => response.json())
+            .then(jsonResponse => {
+              this.countries = jsonResponse.data;
+              this.sortCountries('asc');
+            })
+            .catch(err => console.log(err));
+          },
+          sortCountries(order) {
+            this.countries.sort((a, b) => {
+              if (order === 'asc') {
+                  return a.name.localeCompare(b.name);
+              } else {
+                  return b.name.localeCompare(a.name);
+              }
+          })
+          }
+        }))
+    })
+  </script>
+</body>
+</html>

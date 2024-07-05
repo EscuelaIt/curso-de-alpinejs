@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo</h1>
+  
+  <div x-data="{
+    flag: {
+      'espana': 'banderas/espana.png',
+      'francia': 'banderas/francia.png',
+      'portugal': 'banderas/portugal.png',
+    },
+    countryName: 'espana'
+  }">
+    <button @click="countryName='francia'">Cambiar a francia</button>
+    <img :src="flag[countryName]">
+    <div x-data="{country: ''}" x-modelable="country" x-model="countryName">
+      <p x-text="country" style="color: red;"></p>
+      <a href="#" @click.prevent="country='espana'">España</a>
+      <a href="#" @click.prevent="country='francia'">Francia</a>
+      <a href="#" @click.prevent="country='portugal'">Portugal</a>
+    </div>
+
+  </div>
+
+</body>
+</html>

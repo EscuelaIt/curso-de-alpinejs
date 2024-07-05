@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo métodos</h1>
+  
+  <div x-data="{
+    dateTime: new Date(Date.now()), 
+    get format() { 
+      let options = {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return this.dateTime.toLocaleTimeString('es-ES', options);
+    }, 
+    update() {
+      this.dateTime = new Date(Date.now())
+    }
+  }">
+    <p x-text="format"></p>
+    <button x-on:click="update">Actualiza la hora</button>
+  </div>
+
+  
+</body>
+</html>

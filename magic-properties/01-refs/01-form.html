@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo</h1>
+  
+  <div x-data="formHandler">
+    <form @submit.prevent="submitForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" x-ref="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" x-ref="email" required>
+
+        <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('formHandler', () => ({
+            submitForm() {
+              const name = this.$refs.name.value;
+              const email = this.$refs.email.value;
+
+              console.log('datos:', name, email);
+
+              this.$refs.name.value = '';
+              this.$refs.email.value = '';
+
+            }
+        }));
+    });
+  </script>
+</body>
+</html>

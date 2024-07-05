@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo</h1>
+  
+  <div x-data="{
+    course: {
+      name: '',
+      favorited: false,
+      categories: [],
+      state: '',
+      comments: '',
+    },
+    send() {
+      fetch('http://example.com/api/course', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.course)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+  }">
+    <p>
+      Curso: <input type="text" x-model="course.name">
+    </p>
+
+    <p>
+      <input type="checkbox" id="favorited" x-model="course.favorited">
+      <label for="favorited">Favorito</label>
+    </p>
+    <p>
+      Categorías: 
+      <input type="checkbox" x-model="course.categories" value="frontend" id="frontend"> 
+      <label for="frontend">frontend</label>
+      <input type="checkbox" x-model="course.categories" value="backend" id="backend"> 
+      <label for="backend">backend</label>
+      <input type="checkbox" x-model="course.categories" value="devops" id="devops"> 
+      <label for="devops">devops</label>
+    </p>
+    <p>
+      Estado:
+      <select x-model="course.state">
+        <option value="" disabled>Seleccionar</option>
+        <option value="not_started">Not started</option>
+        <option value="started">Started</option>
+        <option value="finished">Finished</option>
+      </select>
+    </p>
+    <p>
+      Comentarios:
+      <br>
+      <textarea x-model="course.comments"></textarea>
+    </p>
+    <button @click="send">Mostrar el curso</button>
+  </div>
+</body>
+</html>

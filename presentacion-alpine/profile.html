@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Componente de Contador en Alpine.js</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+
+<body x-data="{
+    menuVisible: false,
+}">
+    <div 
+        class="modal-menu"
+        x-show="menuVisible"
+        @click.self="menuVisible = false"
+    >
+        <div class="responsive-nav">
+            <img src="images/close.svg" alt="cerrar" @click="menuVisible=false" class="close">
+            <ul>
+                <li><a href="#">Secciones</a></li>
+                <li><a href="#">Materias de estudio</a></li>
+                <li><a href="#">Cursos</a></li>
+                <li><a href="#">Otras cosas</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <header class="header" x-data="{
+        visible: false,
+    }">
+        <img class="menu" src="images/menu.svg" @click="menuVisible = true">
+        <div class="site-name"><img src="images/escuelaitlogo.png" width="150"></div>
+        <div class="user-options">
+            <img src="images/random-user.jpg" @click="visible = true">
+            <div class="user-menu" x-show="visible" @click.outside="visible = false" x-transition>
+                <p>María Torrefiel</p>
+                <a href="#">Perfil</a>
+                <a href="#">Cerrar Sesión</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#">Secciones</a></li>
+                <li><a href="#">Materias de estudio</a></li>
+                <li><a href="#">Cursos</a></li>
+                <li><a href="#">Otras cosas</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <div class="main-container">
+
+                <h1>Perfil de usuario</h1>
+
+                <div class="card" x-data="{
+                    user: {
+                        name: '',
+                        email: '',
+                        tel: '',
+                    },
+                    visible:  false,
+                }">
+                    <h2 @click="visible = !visible"><img src="images/right.svg" :class="visible && 'opened'"> Editar Perfil</h2>
+                    
+                    <section x-show="visible" x-collapse>
+                        <div class="view-mode">
+                            <p><strong>Nombre:</strong> <span x-text="user.name"></span></p>
+                            <p><strong>Email:</strong> <span x-text="user.email"></span></p>
+                            <p><strong>Teléfono:</strong> <span></span></p>
+                        </div>
+
+                        <div>
+                            <form>
+                                <div class="form-group">
+                                    <label for="name">Nombre:</label>
+                                    <input type="text" id="name" x-model="user.name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="email"  x-model="user.email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Teléfono:</label>
+                                    <input type="tel" id="phone">
+                                </div>
+                                <div class="buttons">
+                                    <button type="submit" class="save-btn">Guardar</button>
+                                    <button type="button" class="cancel-btn">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+
+
+                <div class="card" x-data="userPassword">
+                    <h2 @click="visible = !visible"><img src="images/right.svg" :class="visible && 'opened'"> Cambiar Contraseña</h2>
+                    <section x-show="visible" x-collapse>
+                        <form @submit.prevent="validateForm">
+                            <div class="form-group">
+                                <label for="current-password">Contraseña Actual:</label>
+                                <input type="password" id="current-password" x-model="oldPassword" @keyup="message=''">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">Nueva Contraseña:</label>
+                                <input type="password" id="new-password" x-model="password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirmar Nueva Contraseña:</label>
+                                <input type="password" id="confirm-password">
+                            </div>
+                            <p x-text="message + ' ' + password" x-show="message != ''"></p>
+                            <div class="buttons">
+                                <button type="submit" class="save-btn">Guardar</button>
+                                <button type="button" class="cancel-btn">Cancelar</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('userPassword', () => ({
+                visible:  false,
+                oldPassword: '',
+                password: '1234',
+                message: '',
+                validateForm() {
+                    this.message = ''
+                    if(this.oldPassword == '') {
+                        this.message = 'Debes escribir tu psss antigua'
+                        return
+                    }
+                    console.log('enviar el formulario');
+                }
+            }));
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejemplo Alpinejs</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo Alpinejs</h1>
+
+  <div x-data="{
+    curso: 'AlpineJS'
+  }">
+    <p x-text="curso"></p>
+    <button @click="curso = 'JS'">Cambiar a JS</button>
+  </div>
+
+
+  <div x-data="{
+    cursos: ['AlpineJS', 'Javascript'],
+    centroFormacion: 'EscuelaIT',
+    nuevoCurso: 'HTML',
+    insertar() {
+      this.cursos.push(this.nuevoCurso); 
+      this.nuevoCurso = '';
+    }
+  }">
+    <template x-for="curso in cursos">
+      <p>Estoy haciendo el curso de <span x-text="curso"></span> en <span x-text="centroFormacion"></span>.</p>
+    </template>
+
+    <input type="text" x-model="nuevoCurso" @keyup.enter="insertar"> <button @click="insertar">Añadir</button>
+  </div>
+
+
+</body>
+</html>

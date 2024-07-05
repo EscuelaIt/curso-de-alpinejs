@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplos eventos teclado y ratón</h1>
+  
+  <div x-data>
+    <p>
+      <input 
+        type="text" 
+        value="Campo de texto" 
+        @keyup="console.log('has pulsado una tecla', $event);"
+        @keyup.enter="console.log('has pulsado enter');"
+        >
+    </p>
+
+    <textarea 
+      rows="4"
+      @keyup.enter.shift="$event.target.value += '-------\n'"
+      @click="$event.target.style['background-color'] = 'red'"
+      @click.cmd="$event.target.style['background-color'] = 'white'"
+      @keydown="console.log($event.target.value);"
+    ></textarea>
+</div>
+  
+</body>
+</html>

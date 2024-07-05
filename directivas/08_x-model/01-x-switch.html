@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem;
+    }
+
+    .checkbox-span {
+      display: flex;
+      align-items: center;
+      width: 2rem;
+      height: 1rem;
+      border: 1px solid;
+      border-width: 1px;
+      border-radius: 9999px;
+    }
+
+    .checkbox-checked {
+      background-color: blue;
+      border-color: blue;
+    }
+
+    .checkbox-unchecked {
+      background-color: gray;
+      border-color: gray;
+    }
+
+    .checkbox-indicator {
+      display: block;
+      width: 50%;
+      height: 100%;
+      border-radius: 100%;
+      background-color: white;
+    }
+
+    .checkbox-indicator-checked {
+      margin-left: auto;
+    }
+
+    .checkbox-text {
+      margin-left: 0.5rem;
+      color: gray;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo</h1>
+  
+    <div x-data="{active: false}">
+      <input type="checkbox" name="active" x-model="active" class="hidden" id="active">
+      <label class="checkbox-label" for="active">
+        <span aria-hidden="true" class="checkbox-span" :class="active ? 'checkbox-checked' : 'checkbox-unchecked'">
+          <span class="checkbox-indicator"  :class="active ? 'checkbox-indicator-checked' : 'checkbox-indicator-unchecked'"></span>
+        </span>
+        <span class="checkbox-text">Activar plan</span>
+      </label>
+
+    </div>
+
+</body>
+</html>

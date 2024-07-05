@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    .task {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+  <h1>Ejemplo todo list</h1>
+
+  <div x-data="todoApp">
+    <input type="text" x-model="newTodo" @keyup.enter="addTodo"> <button @click="addTodo">Añadir</button>
+    <template x-if="todos.length == 0"><p>No hay tareas... escribe algo</p></template>
+    <template x-if="todos.length > 0">
+      <ul>
+        <template x-for="todo in todos">
+          <li x-text="todo"></li>
+        </template>
+      </ul>
+    </template>
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('todoApp', () => ({
+        newTodo: '',
+        todos: [],
+        addTodo() {
+          this.todos.push(this.newTodo);
+          console.log(this.todos);
+          this.newTodo = '';
+        }
+      }));
+    });
+  </script>
+</body>
+
+</html>

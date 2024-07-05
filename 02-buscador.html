@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscador</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .container {
+      margin: 0 auto;
+      max-width: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" x-data="{ 
+    keyword: '', 
+    languages: ['Java', 'Javascript', 'HTML', 'CSS', 'PHP', 'NodeJS'],
+    get search() {
+      return this.languages.filter( 
+        item => item.startsWith(this.keyword)
+      );
+    }
+  }">
+    <h1>Buscador</h1>
+    <input x-model="keyword"> <span x-text="keyword"></span>
+    <ul>
+      <template x-for="language in search">
+        <li x-text="language"></li>
+      </template>
+    </ul>
+  </div>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</body>
+</html>

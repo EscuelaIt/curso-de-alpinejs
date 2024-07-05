@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo</h1>
+  
+  <div x-data="{course: 'HTML', favorited: false, categories: []}">
+    Curso: <input type="text" x-model.lazy="course">
+    <p x-text="course"></p>
+    <p x-show="course.length < 2">El texto del curso no es suficientemente largo</p>
+    <button @click="course='PHP'">cambiar course</button>
+    <input type="checkbox" x-model="favorited">
+    <p x-text="favorited"></p>
+
+    <input type="checkbox" x-model="categories" value="frontend">
+    <input type="checkbox" x-model="categories" value="backend">
+    <input type="checkbox" x-model="categories" value="devops">
+    <p x-text="categories[0]"></p>
+  </div>
+  
+</body>
+</html>
