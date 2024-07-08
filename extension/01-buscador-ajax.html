@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    .search-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .search-container input {
+      padding: 5px 30px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 5px;
+      top: 3px;
+      pointer-events: none;
+      color: gray;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+  <h1>Ejemplo</h1>
+
+  <div x-data="{ 
+    keyword: '', 
+    results: [], 
+    url: 'https://timer.escuelait.com/api/games',
+    saveResults(e) {
+      console.log(e.detail); 
+      this.results = e.detail
+    }
+  }" @searchresults="saveResults">
+    <div x-search-icon.black class="search-container">
+      <input 
+        type="text" 
+        placeholder="Buscar..." 
+        x-model.debounce="keyword"
+        x-endpoint="url"
+      >
+    </div>
+    <p><button @click="url = 'https://timer.escuelait.com/api/countries'">cambiar endpoint</button></p>
+    <div>
+      <h2>Resultados:</h2>
+      <ul>
+        <template x-for="country in results" :key="country.id">
+          <li x-text="country.name"></li>
+        </template>
+      </ul>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.directive('search-icon', (el, {modifiers}) => {
+        let color = '#888888';
+        if(modifiers.includes('white')) {
+          color = '#fff';
+        }
+        if(modifiers.includes('black')) {
+          color = '#000';
+        }
+        const icon = document.createElement('span');
+        icon.className = 'search-icon';
+        icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="${color}"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>`;
+        el.appendChild(icon);
+      });
+
+      Alpine.directive('endpoint', (el, {expression}, {evaluate, evaluateLater, effect}) => {
+        const evaluateEndpoint = evaluateLater(expression);
+        const evaluateKeyword = evaluateLater('keyword');
+        let keyword = '';
+
+        const searchKeyword = (url) => {
+          evaluateKeyword((newKeyword) => {
+            if (newKeyword !== keyword) {
+              keyword = newKeyword;
+              fetch(`${url}?keyword=${keyword}`)
+                  .then(response => response.json())
+                  .then(jsonData => {
+                    el.dispatchEvent(new CustomEvent('searchresults', { bubbles:true, detail: jsonData.data }));
+                  })
+                  .catch(error => console.error('Error fetching countries:', error));
+            }
+          });
+        }
+
+        effect(() => {
+          evaluateEndpoint((url) => {
+            searchKeyword(url);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

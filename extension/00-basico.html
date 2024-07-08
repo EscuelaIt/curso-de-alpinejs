@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpine.js</title>
+  <style>
+    body {
+      margin: 2rem;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <h1>Ejemplo</h1>
+  
+  <div x-data="{ color: 'blue'}" x-hoverback="color">
+    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni odio praesentium cupiditate, quo consequuntur, asperiores quas commodi aliquam, quibusdam non reprehenderit optio impedit exercitationem reiciendis aperiam officiis? Soluta, tempore sapiente.</p>
+    <button @click="color='green'">cambiar color</button>
+  </div>
+
+  <script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.directive('hoverback', (el, {expression}, {evaluate, effect}) => {
+      let color;
+      el.addEventListener('mouseenter', () => {
+        el.style.backgroundColor = color;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.backgroundColor = '';
+      });
+
+      effect(() => {
+        color = evaluate(expression);
+        console.log('color cambiado dentro de effect', color);
+      })
+    });
+  });
+  </script>
+</body>
+</html>

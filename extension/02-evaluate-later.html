@@ -18,9 +18,24 @@
 <body>
   <h1>Ejemplo</h1>
   
+  <div x-data="{ mensaje: '', mensajeRetardo: ''}">
+    <input x-model="mensaje">
+    <button x-delay:2000="mensajeRetardo = mensaje">Ejecutar con retardo</button>
+    <p>Mensaje: <span x-text="mensaje"></span></p>
+    <p>Mensaje retardo: <span x-text="mensajeRetardo"></span></p>
+  </div>
+
   <script>
   document.addEventListener('alpine:init', () => {
-    
+    Alpine.directive('delay', (el, { value, expression }, {evaluateLater}) => {
+      const delay = parseInt(value);
+      console.log(delay);
+      const toEvaluate = evaluateLater(expression);
+
+      el.addEventListener('click', () => {
+        setTimeout(() => toEvaluate() , delay);
+      });
+    });
   });
   </script>
 </body>
