@@ -18,22 +18,34 @@
 <body>
   <h1>Ejemplo</h1>
   
-  <div x-data="{ mensaje: '', mensajeRetardo: ''}">
+  <div x-data="{ mensaje: 'hola', mensajeRetardo: ''}">
     <input x-model="mensaje">
-    <button x-delay:2000="mensajeRetardo = mensaje">Ejecutar con retardo</button>
+    <button x-delay:3000="mensajeRetardo = mensaje">Ejecutar con un retardo</button>
     <p>Mensaje: <span x-text="mensaje"></span></p>
     <p>Mensaje retardo: <span x-text="mensajeRetardo"></span></p>
   </div>
 
   <script>
   document.addEventListener('alpine:init', () => {
-    Alpine.directive('delay', (el, { value, expression }, {evaluateLater}) => {
-      const delay = parseInt(value);
-      console.log(delay);
-      const toEvaluate = evaluateLater(expression);
+    Alpine.directive('delay', (el, {expression, value}, {evaluate, evaluateLater, cleanup}) => {
+      const expressionEvaluator = evaluateLater(expression);
+      const mensajeEvaluator = evaluateLater('mensaje + mensaje');
+      let delay = parseInt(value);
 
-      el.addEventListener('click', () => {
-        setTimeout(() => toEvaluate() , delay);
+      const handler = () => {
+        console.log('Has hecho clic');
+        setTimeout(() => {
+          expressionEvaluator();
+          mensajeEvaluator(
+            (mensajeEvaluado) => console.log('el mensaje evaluado es:', mensajeEvaluado)
+          );
+        }, delay);
+      }
+
+      el.addEventListener('click', handler);
+
+      cleanup(() => {
+        el.removeEventListener('click', handler);
       });
     });
   });
