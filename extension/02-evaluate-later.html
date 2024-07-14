@@ -27,18 +27,15 @@
 
   <script>
   document.addEventListener('alpine:init', () => {
-    Alpine.directive('delay', (el, {expression, value}, {evaluate, evaluateLater, cleanup}) => {
+    Alpine.directive('delay', (el, {expression, value}, {evaluate, evaluateLater, cleanup, effect}) => {
       const expressionEvaluator = evaluateLater(expression);
-      const mensajeEvaluator = evaluateLater('mensaje + mensaje');
+      const mensajeEvaluator = evaluateLater('mensaje');
       let delay = parseInt(value);
 
       const handler = () => {
         console.log('Has hecho clic');
         setTimeout(() => {
           expressionEvaluator();
-          mensajeEvaluator(
-            (mensajeEvaluado) => console.log('el mensaje evaluado es:', mensajeEvaluado)
-          );
         }, delay);
       }
 
@@ -46,6 +43,12 @@
 
       cleanup(() => {
         el.removeEventListener('click', handler);
+      });
+
+      effect(() => {
+        mensajeEvaluator(
+            (mensajeEvaluado) => console.log('el mensaje evaluado es:', mensajeEvaluado)
+          );
       });
     });
   });
